@@ -37,8 +37,8 @@ iris_d = pd.DataFrame(iris['data'], columns = ['Sepal_Length',
 iris_d['Species'] = iris.target
 
 def plot_iris(iris, col1, col2):
-    sns.lmplot(x= col1, y=col2, data=iris, hue='Species', fit_reg=False)
-    plt.xlabel(col1)
+    sns.lmplot(x= col1, y=col2, data=iris, hue='Species', fit_reg=True)
+    plt.xlabel(col1) 
     plt.ylabel(col2)
     plt.title('Iris species shown by color')
     plt.show()
@@ -52,7 +52,7 @@ plot_iris(iris_d, 'Sepal_Length', 'Petal_Width')
 
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn import metrics
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -64,6 +64,6 @@ X_test = scaler.transform(X_test)
 knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, y_train)
 y_pred = knn.predict(X_test)
-print(metrics.accuracy_score(y_test, y_pred))
+print(accuracy_score(y_test, y_pred))
 # 输出分类报告
-print(metrics.classification_report(y_test, y_pred, target_names=iris.target_names))
+print(classification_report(y_test, y_pred, target_names=iris.target_names))
