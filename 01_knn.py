@@ -1,3 +1,14 @@
+''' KNN算法
+K近邻算法介绍
+knn api初步使用
+kd树
+案例1：鸢尾花分类
+特征工程-特征与处理
+k-近邻算法总结
+交叉验证，网格搜索
+案例2：预测facebook签到位置
+'''
+
 from sklearn.datasets import load_iris
 
 iris = load_iris()
