@@ -25,6 +25,44 @@ from torch.linalg import norm
 print(norm(X))
 
 '''
+绘制函数y=f(x)=x^3-1/x的图像，同时绘制其在x=1处的导数切线
+'''
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-10, 10, 100)
+y = x**3 - 1/x
+plt.plot(x, y, label='y=x^3-1/x')
+f_y = 3*x*x + 1/x**2
+# 绘制x=1时，y=x^3-1/x的导数切线
+x1 = 1
+plt.plot(x1, 3*1*1 + 1/1**2)
+plt.scatter(x1, 3*1*1 + 1/1**2, color='red')
+# plt.legend()
+# plt.show()
+
+'''
+求函数f(x)=3*x1^2 + 5*e^x2的梯度
+'''
+
+import torch
+
+x = torch.tensor([1.0, 2.0], requires_grad=True)
+y = 3*x[0]**2 + 5*torch.exp(x[1])
+y.backward()
+print(f'f(x)=3*x1^2 + 5*e^x2的梯度:{x.grad}')
+
+'''
+函数f(x)=||x||_2的梯度是啥？
+'''
+
+x = torch.arange(4, dtype=torch.float32, requires_grad=True)
+y = torch.linalg.norm(x)
+y.backward()
+print(f'f(x)=||x||_2的值：{y} ,梯度:{x.grad}')
+
+'''
 1.为什么二阶导数比一阶导数的开销更大？
     - 二阶导数的计算，需要先求出一阶导数，然后再求出一阶导数的导数，因此二阶导数的计算开销更大。
 2.在执行反向传播函数之后，立即再次执行它，看看会发生什么？
@@ -35,7 +73,7 @@ print(norm(X))
 '''
 
 a = torch.arange(4, dtype=torch.float32,requires_grad=True)
-b = a.T.dot(a)
+b = torch.dot(x,x)
 b.backward(retain_graph=True)
 print(a.grad)
 b.backward()
@@ -82,6 +120,6 @@ x = np.arange(0, 10, 0.1)
 plt.plot(x, f(x), label='f(x)')
 plt.plot(x, grad_f(x), label="f'(x)")
 
-plt.legend()
-plt.show()
+# plt.legend()
+# plt.show()
 
