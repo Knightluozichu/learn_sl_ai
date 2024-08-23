@@ -181,10 +181,60 @@ accuracy = metrics.accuracy_score(y_test, y_pred)
 print(f'Accuracy: {accuracy}')
 
 # 可视化决策树
-# plt.figure(figsize=(12,8))
-# plot_tree(clf, filled=True, feature_names=iris.feature_names, class_names=iris.target_names)
+# 保存决策树图像
+plt.figure(figsize=(12,8))
+plot_tree(clf, filled=True, feature_names=iris.feature_names, class_names=iris.target_names)
+# plt.savefig('decision_tree.png')
+plt.show()
+
+
+# 决策树回归 预测波士顿房价
+import os
+data_url = os.path.join(os.path.dirname(__file__), "data/housing.data")
+import pandas as pd
+import numpy as np
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# 读取数据
+raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
+data = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
+target = raw_df.values[1::2, 2]
+
+# 划分训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=42)
+
+# 创建决策树回归模型
+regressor = DecisionTreeRegressor(max_depth=3)
+
+# 训练模型
+regressor.fit(X_train, y_train)
+
+# 预测
+y_pred = regressor.predict(X_test)
+
+# 评估模型
+mse = mean_squared_error(y_test, y_pred)
+
+print(f'Mean Squared Error: {mse}')
+
+# # 可视化决策树
+from sklearn.tree import plot_tree
+
+# 可视化决策树结构
+# plt.figure(figsize=(20, 10))
+# plot_tree(regressor, feature_names=data.feature_names, filled=True, rounded=True)
 # plt.show()
 
+import numpy as np
 
-# 信息熵
-
+# 绘制预测结果与实际结果的对比
+plt.figure(figsize=(10, 6))
+plt.plot(np.arange(len(y_test)), y_test, label="Actual Prices", marker='o')
+plt.plot(np.arange(len(y_test)), y_pred, label="Predicted Prices", marker='x')
+plt.title("Actual vs Predicted Prices")
+plt.xlabel("Sample Index")
+plt.ylabel("Price")
+plt.legend()
+plt.show()

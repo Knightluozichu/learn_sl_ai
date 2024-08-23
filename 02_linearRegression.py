@@ -90,6 +90,8 @@ y_predict = linear.predict(X_test)
 print(linear.score(X_train, y_train))
 print(linear.score(X_test, y_test))
 y_train_hat = linear.predict(X_train)
+mse = mean_squared_error(y_test, y_predict)
+print(f"mse:{mse}")
 
 import matplotlib.pyplot as plt
 # 训练集
