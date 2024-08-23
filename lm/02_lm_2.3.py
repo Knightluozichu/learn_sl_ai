@@ -123,3 +123,7 @@ plt.plot(x, grad_f(x), label="f'(x)")
 # plt.legend()
 # plt.show()
 
+
+'''
+概率
+'''
