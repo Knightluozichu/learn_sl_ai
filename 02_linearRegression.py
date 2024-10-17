@@ -91,22 +91,22 @@ print(linear.score(X_train, y_train))
 print(linear.score(X_test, y_test))
 y_train_hat = linear.predict(X_train)
 mse = mean_squared_error(y_test, y_predict)
-print(f"mse:{mse}")
+print(f"mse:{mse}y_test[10] y_predict[10]: {y_test[10]} {y_predict[10]}")
 
-import matplotlib.pyplot as plt
-# 训练集
-plt.figure(num="train")
-plt.plot(range(len(X_train)), y_train, 'r', label='u true')
-plt.plot(range(len(X_train)), y_train_hat, 'g', label='u predict')
-plt.legend(loc="upper right")
-plt.show()
+# import matplotlib.pyplot as plt
+# # 训练集
+# plt.figure(num="train")
+# plt.plot(range(len(X_train)), y_train, 'r', label='u true')
+# plt.plot(range(len(X_train)), y_train_hat, 'g', label='u predict')
+# plt.legend(loc="upper right")
+# plt.show()
 
-# 测试集
-plt.figure(num="test")
-plt.plot(range(len(X_test)), y_test, 'r', label='u true')
-plt.plot(range(len(X_test)), y_predict, 'g', label='u predict')
-plt.legend(loc="upper right")
-plt.show()
+# # 测试集
+# plt.figure(num="test")
+# plt.plot(range(len(X_test)), y_test, 'r', label='u true')
+# plt.plot(range(len(X_test)), y_predict, 'g', label='u predict')
+# plt.legend(loc="upper right")
+# plt.show()
 
 # 波士顿房价多项式扩展
 from sklearn.preprocessing import PolynomialFeatures
@@ -131,20 +131,21 @@ y_predict = poly_reg.predict(X_test)
 print(poly_reg.score(X_train, y_train))
 print(poly_reg.score(X_test, y_test))
 y_train_hat = poly_reg.predict(X_train)
+print(f"mse:{mean_squared_error(y_test, y_predict)}y_test[10] y_predict[10]: {y_test[10]} {y_predict[10]}")
 
-# 训练集
-plt.figure(num="train")
-plt.plot(range(len(X_train)), y_train, 'r', label='u true')
-plt.plot(range(len(X_train)), y_train_hat, 'g', label='u predict')
-plt.legend(loc="upper right")
-plt.show()
+# # 训练集
+# plt.figure(num="train")
+# plt.plot(range(len(X_train)), y_train, 'r', label='u true')
+# plt.plot(range(len(X_train)), y_train_hat, 'g', label='u predict')
+# plt.legend(loc="upper right")
+# plt.show()
 
-# 测试集
-plt.figure(num="test")
-plt.plot(range(len(X_test)), y_test, 'r', label='u true')
-plt.plot(range(len(X_test)), y_predict, 'g', label='u predict')
-plt.legend(loc="upper right")
-plt.show()
+# # 测试集
+# plt.figure(num="test")
+# plt.plot(range(len(X_test)), y_test, 'r', label='u true')
+# plt.plot(range(len(X_test)), y_predict, 'g', label='u predict')
+# plt.legend(loc="upper right")
+# plt.show()
 
 path = os.path.join(os.path.dirname(__file__), "model")
 joblib.dump(poly_reg, os.path.join(path,"poly_reg.pkl"))
@@ -210,3 +211,21 @@ joblib.dump(linear, os.path.join(path,"linear.pkl"))
 **a.** 深入了解 `Pipeline` 的使用方法和好处。  
 **b.** 研究如何使用 `GridSearchCV` 进行超参数优化。
 '''
+#  %% 使用集成学习 GBDT
+from sklearn.ensemble import GradientBoostingRegressor
+
+# 初始化 GBDT 回归模型
+gbdt = GradientBoostingRegressor(n_estimators=1000, learning_rate=0.1, max_depth=2, random_state=42)
+gbdt.fit(X_train, y_train)
+
+# 计算训练集和测试集上的 R2 分数
+train_score = gbdt.score(X_train, y_train)
+test_score = gbdt.score(X_test, y_test)
+
+print(f'Train R2 Score: {train_score:.4f}')
+print(f'Test R2 Score: {test_score:.4f}')
+print(f'y_test[10] predictions[10]: {y_test[10]} {gbdt.predict(X_test[10].reshape(1, -1))}')
+
+
+
+# %%
