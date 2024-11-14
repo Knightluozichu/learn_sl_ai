@@ -121,6 +121,10 @@ class VOCDataset(Dataset):
         # 创建 target 字典
         target = {}
         target["boxes"] = boxes
+        areas = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+        target['area'] = torch.as_tensor(areas, dtype=torch.float32)
+        # 添加 'iscrowd' 字段，默认为 0（表示没有遮挡）
+        target['iscrowd'] = torch.zeros((boxes.shape[0],), dtype=torch.int64)
         target["labels"] = labels
         target["image_id"] = torch.tensor([idx])
 

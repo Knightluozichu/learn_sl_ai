@@ -9,8 +9,8 @@ if "__file__" in globals():
 import torch
 import torchvision
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
-from learn_sl_ai.VOC2007_config import CLASS_NAMES, ROOT_DIR
-from learn_sl_ai.VOC2007_dataset import get_datasets
+from VOC2007_config import CLASS_NAMES, ROOT_DIR
+from VOC2007_dataset import get_datasets
 
 # 获取类别数量
 num_classes = len(CLASS_NAMES) + 1  # 包括背景类
@@ -23,6 +23,8 @@ in_features = model.roi_heads.box_predictor.cls_score.in_features
 model.roi_heads.box_predictor = (
     torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
 )
+# 检查是否有gpu可用
+
 
 # 将模型移动到设备上
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -75,4 +77,15 @@ for epoch in tqdm(range(num_epochs), desc='Epochs'):
 # 保存模型
 torch.save(model.state_dict(), "faster_rcnn.pth")
 # %%
-# /Users/luozichu/Repositories/learn/python/20240629_py/learn_sl_ai/data/voc_2007_train_val/VOC2007/ImageSets/Main/trainval.txt
+# 加载模型
+model.load_state_dict(torch.load("faster_rcnn.pth"))
+
+# 模型评估
+model.eval()
+
+# 预测val_loader的前2个数据
+for images, targets in val_loader:
+    images = list(image.to(device) for image in images)
+    outputs = model(images)
+    print(outputs)
+    break
