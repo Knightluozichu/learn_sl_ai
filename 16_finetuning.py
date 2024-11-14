@@ -1,10 +1,11 @@
 # %%
 import tensorflow as tf
-from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
+# from keras._tf_keras.keras.preprocessing.image import ImageDataGenerator
 from keras import models, layers, optimizers
 import matplotlib.pyplot as plt
 import os
-
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 # 数据目录
 traindir = "data/hotdog-nothotdog/train"
 testdir = "data/hotdog-nothotdog/test"
@@ -89,3 +90,4 @@ history = net.fit(
     validation_data=test_data_gen,
     validation_steps=test_data_gen.samples // BATCH_SIZE,
 )
+# %%
