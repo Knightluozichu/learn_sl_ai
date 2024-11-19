@@ -1,0 +1,10 @@
+flowchart TD
+    subgraph 编码器
+        A["输入源句子<br>'我' '爱' '你' '小红'"] --> B["编码器<br>得到键和值"]
+    end
+    subgraph 解码器
+        C["解码器当前状态<br>查询 q"] --> D["计算注意力权重<br>α_i = softmax(sim(q, k_i))"]
+        D --> E["计算上下文向量<br>context = Σα_i * v_i"]
+        E --> F["生成目标词"]
+    end
+    B -->|键 k_i, 值 v_i| D
