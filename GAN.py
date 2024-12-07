@@ -234,26 +234,3 @@ plt.title("Training Images")
 plt.imshow(np.transpose(vutils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(),(1,2,0)))
 plt.show()
 # %%
-from openai import OpenAI
-
-# 请求地址：https://az.gptplus5.com
-# 请求地址：https://az.gptplus5.com/v1
-# 路由请求：https://az.gptplus5.com/v1/chat/completions
-
-api_key = "sk-P5Hkd00EryhrXSfy3aFe52536649424e9099Fa3358B211Da"
-api_base = "https://az.gptplus5.com/v1"
-client = OpenAI(api_key=api_key, base_url=api_base)
-
-completion = client.chat.completions.create(
-  model="gpt-4-turbo",
-  stream=True,
-  messages=[
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "Hello!"}
-  ]
-)
- 
-for chunk in completion:
-  print(chunk.choices[0].delta)
-
-# %%
